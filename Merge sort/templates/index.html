@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Sort Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            color: #3f59ce;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #000000;
+        }
+        .button {
+            background-color: #133d30;
+            color: white;
+            border: 2px solid black;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #2f9254;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label {
+            background-color: #133d30;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+        label:hover {
+            background-color: #2f9254;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        img.logo {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        .logs-container {
+            margin-top: 40px;
+            text-align: left;
+            background: hwb(0 100% 0%);
+            border: 1px solid #ffffff;
+            padding: 10px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            max-height: 300px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+    <!-- Add Logo -->
+    <img src="/static/merge_sort_logo.png" alt="Merge Sort Logo" class="logo">
+
+    <h1>Merge Sort Application</h1>
+    <h2>Upload Your CSV File:</h2>
+
+    <div class="container">
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="row">
+                <label for="file">Choose File</label>
+                <input type="file" name="file" id="file" accept=".csv" required>
+                <span id="file-name">No file selected</span>
+                <button type="button" id="get-columns" class="button">Get Columns</button>
+            </div>
+        </form>
+
+        <div id="column-selection" class="hidden">
+            <h2>Select a Column to Sort</h2>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="file-name" id="file-name-hidden">
+                <select name="column" id="columns" required></select>
+                <button type="submit" class="button">Sort and Download</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Logs Section -->
+    <div class="logs-container" id="logs-container">
+        <h2>Thread Activity Logs</h2>
+        <pre id="log-output"></pre>
+    </div>
+
+    <script>
+        // Display selected file name
+        const fileInput = document.getElementById('file');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileInput.addEventListener('change', function () {
+            fileNameDisplay.textContent = fileInput.files[0] ? fileInput.files[0].name : 'No file selected';
+        });
+
+        // Handle Get Columns button click
+        document.getElementById('get-columns').addEventListener('click', function () {
+            if (!fileInput.files.length) {
+                alert("Please select a file!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/get_columns', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    const columnSelect = document.getElementById('columns');
+                    columnSelect.innerHTML = ''; // Clear previous options
+                    data.columns.forEach(column => {
+                        const option = document.createElement('option');
+                        option.value = column;
+                        option.textContent = column;
+                        columnSelect.appendChild(option);
+                    });
+
+                    document.getElementById('file-name-hidden').value = fileInput.files[0].name;
+                    document.getElementById('column-selection').classList.remove('hidden');
+                }
+            })
+            .catch(error => {
+                alert("Error fetching columns: " + error.message);
+            });
+        });
+
+        // Auto-refresh logs every 2 seconds
+        function fetchLogs() {
+            fetch('/logs')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('log-output').textContent = data;
+                });
+        }
+
+        // Refresh logs every 2 seconds
+        setInterval(fetchLogs, 2000);
+    </script>
+</body>
+</html>

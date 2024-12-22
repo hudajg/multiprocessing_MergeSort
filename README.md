@@ -22,6 +22,7 @@ The project highlights:
   - `Flask`: Web framework for creating the user interface.
   - `Multiprocessing`: Library for implementing parallelism in the merge sort algorithm.
   - `Pandas`: Library for handling CSV files and data manipulation.
+  - **Java script** : Used for enhancing the interactivity of the web interface.
 - **HTML/CSS**: Front-end for the user interface.
 
 ## How it Works:

@@ -13,7 +13,7 @@ The project highlights:
 - **Web Application:** Provides a clean interface for uploading datasets, selecting numeric columns for sorting, and downloading the results.
 - **Dataset Handling:** 
   - Uses a **synthetic dataset** with 1 million rows and 10 million for benchmarking large datasets.
-  - Includes support for **real-world small datasets** sourced from Kaggle.
+  - Includes support for **small datasets** sourced from Kaggle.
 - **Error Handling:** Handles invalid, empty, or non-numeric column selections gracefully.
 
 ## Technologies Used:

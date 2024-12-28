@@ -1,5 +1,4 @@
-# multiprocessing_MergeSort
-
+# Parallel Merge Sort 
 ## Objective:
 This project demonstrates the implementation of the **Merge Sort algorithm** with parallel processing using Python's `multiprocessing` library. The objective is to compare the performance of **sequential merge sort** and **parallel merge sort** on both small and large datasets. 
 

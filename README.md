@@ -18,7 +18,7 @@ The project highlights:
 
 ## Technologies Used:
 - **Python**:
-  - `Flask`: Flask, a micro web framework, was used to build the user interface, handle routing, and store data in local files instead of using a database.
+  - `Flask`: Web framework, was used to build the user interface, handle routing, and store data in local files instead of using a database.
   - `Multiprocessing`: Library for implementing parallelism in the merge sort algorithm.
   - `Pandas`: Library for handling CSV files and data manipulation.
   - **Java script** : Used for enhancing the interactivity of the web interface.
